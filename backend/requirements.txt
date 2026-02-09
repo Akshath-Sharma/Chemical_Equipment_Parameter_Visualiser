@@ -15,6 +15,7 @@ numpy
 
 # Report Generation
 xhtml2pdf
+matplotlib
 
 # Utilities
 certifi
