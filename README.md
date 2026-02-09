@@ -169,9 +169,19 @@ cd desktop_frontend
 python -m venv venv
 venv\Scripts\activate
 
+# Or on macOS/Linux:
+python3 -m venv venv
+source venv/bin/activate
+
 # Install dependencies
 pip install -r requirements.txt
 ```
+
+### Dependency Structure
+Dependencies are kept separate by component for cleaner environments:
+- **`backend/requirements.txt`** — Django, DRF, data processing (pandas, numpy), PDF generation
+- **`desktop_frontend/requirements.txt`** — PyQt5, Matplotlib, and API client dependencies
+- **`web_frontend/package.json`** — React and npm dependencies
 
 ---
 

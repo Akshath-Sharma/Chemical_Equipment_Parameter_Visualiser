@@ -1,0 +1,21 @@
+# Backend Dependencies - Django REST API
+
+# Core Framework
+Django>=5.0
+djangorestframework
+django-cors-headers
+djangorestframework-simplejwt
+
+# Environment Configuration
+python-dotenv
+
+# Data Processing & Analysis
+pandas
+numpy
+
+# Report Generation
+xhtml2pdf
+
+# Utilities
+certifi
+urllib3

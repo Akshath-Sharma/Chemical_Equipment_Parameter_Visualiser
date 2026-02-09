@@ -1,0 +1,17 @@
+# Desktop Frontend Dependencies - PyQt5 Application
+
+# GUI Framework
+PyQt5
+
+# Data Visualization
+matplotlib
+
+# API Communication
+requests
+
+# Environment Configuration
+python-dotenv
+
+# Utilities
+certifi
+urllib3
