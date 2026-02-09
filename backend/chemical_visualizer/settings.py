@@ -124,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000","https://chemical-equipment-parameter-visual-phi.vercel.app/"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000","https://chemical-equipment-parameter-visual-phi.vercel.app"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
