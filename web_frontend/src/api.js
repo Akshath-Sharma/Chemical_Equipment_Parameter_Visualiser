@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base URL for the backend API
-const API_URL = "https://chemical-equipment-parameter-visualiser.onrender.com";
+const API_URL = "https://chemical-equipment-parameter-visualiser.onrender.com/api";
 
 // AUTHENTICATION
 export const login_user = async (username, password) => {
