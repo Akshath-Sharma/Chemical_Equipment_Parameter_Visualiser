@@ -11,7 +11,7 @@ services:
       python manage.py collectstatic --no-input
       python manage.py migrate --no-input
     # No 'cd' needed here now because we are already in /backend
-    startCommand: gunicorn chemical_visualizer.wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --workers 2
+    startCommand: gunicorn chemical_visualizer.wsgi:application --bind 0.0.0.0:$PORT 
     envVars:
       - key: DJANGO_SECRET_KEY
         sync: false
