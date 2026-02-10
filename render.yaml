@@ -11,9 +11,9 @@ services:
     startCommand: cd backend && gunicorn chemical_visualizer.wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --workers 2
     envVars:
       - key: DJANGO_SECRET_KEY
-        value: fossee-internship-demo-key-2025
+        sync: false
       - key: DEBUG_MODE
-        value: True
+        value: "True"
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: DATABASE_URL
