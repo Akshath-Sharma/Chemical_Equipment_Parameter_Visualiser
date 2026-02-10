@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {Chart as ChartJS,CategoryScale,LinearScale,BarElement,Title,Tooltip, Legend,ArcElement} from "chart.js";
 import {Bar,Pie} from "react-chartjs-2";
 import "./App.css";
@@ -14,6 +15,9 @@ function App() {
     set_show_distribution, show_csv_modal, set_show_csv_modal, csv_data,
     handleViewCSV: handle_view_CSV,
   } = useAppLogic();
+
+  const [selectedHistory, setSelectedHistory] = useState(null);
+  const [selectedPos, setSelectedPos] = useState(null); // {x, y} for context menu positioning
   
   // --- LOGIN SCREEN ---
   if (!token){
@@ -234,7 +238,12 @@ function App() {
             <p className="subtitle">Last 5 Uploads</p>
             <ul className="history_list">
               {history.length === 0 ? <p className="empty-text">No history found.</p> : history.map((item) => (
-                <li key={item.id} className="history_item">
+                <li
+                  key={item.id}
+                  className="history_item"
+                  onClick={() => { setSelectedPos(null); setSelectedHistory(item); }}
+                  onContextMenu={(e) => { e.preventDefault(); setSelectedPos({ x: e.clientX, y: e.clientY }); setSelectedHistory(item); }}
+                >
                    <span className="doc-icon">📄</span>
                    <div className="history_info">
                      <span className="history_name">{item.filename}</span>
@@ -247,6 +256,35 @@ function App() {
                 </li>
               ))}
             </ul>
+
+            {selectedHistory && (
+              <div className="modal_overlay" onClick={() => { setSelectedHistory(null); setSelectedPos(null); }}>
+                <div
+                  className="modal_content"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    maxWidth: '360px',
+                    position: 'fixed',
+                    left: selectedPos ? `${selectedPos.x}px` : '50%',
+                    top: selectedPos ? `${selectedPos.y}px` : '50%',
+                    transform: selectedPos ? 'translate(0, 0)' : 'translate(-50%, -50%)',
+                    zIndex: 9999,
+                  }}
+                >
+                  <div className="modal_header">
+                    <h3 style={{margin: 0}}>{selectedHistory.filename}</h3>
+                    <button className="modal_close" onClick={() => setSelectedHistory(null)}>✕</button>
+                  </div>
+                  <div style={{padding: '16px 24px'}}>
+                    <p style={{marginTop: 0, color: '#4a5568'}}>Choose an action</p>
+                    <div style={{display: 'flex', gap: '8px'}}>
+                      <button onClick={() => { handle_view_CSV(selectedHistory.id); setSelectedHistory(null); }} className="primary_button">View CSV</button>
+                      <button onClick={() => { handle_download_PDF(selectedHistory.id); setSelectedHistory(null); }} className="pdf_button">Download PDF</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </aside>
 

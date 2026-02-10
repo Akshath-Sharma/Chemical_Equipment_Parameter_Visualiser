@@ -8,7 +8,7 @@ export const login_user = async (username, password) => {
 };
 
 export const register_user = async (username, password) => {
-    return await axios.post(`${API_URL}/api/register/`, {username, password});
+    return await axios.post(`${API_URL}/register/`, {username, password});
 };
 
 // DATA FETCHING from HISTORY

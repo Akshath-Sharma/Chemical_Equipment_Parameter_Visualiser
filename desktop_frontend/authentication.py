@@ -100,8 +100,9 @@ class LoginWindow(QWidget):
         self.close()
 
 class RegisterWindow(QWidget):
-    def __init__(self):
+    def __init__(self, switch_callback=None):
         super().__init__()
+        self.switch_callback = switch_callback
         self.init_ui()
 
     def init_ui(self):
@@ -114,22 +115,25 @@ class RegisterWindow(QWidget):
         
         self.card = QFrame()
         self.card.setFixedSize(400, 450)
-        self.card.setStyleSheet("QFrame {background-color: white; border-radius: 12px;}")
+        # Match Login card styles and ensure labels are transparent
+        self.card.setStyleSheet("QFrame {background-color: white; border-radius: 12px;} QLabel { background: transparent; }")
         card_layout = QVBoxLayout(self.card)
         card_layout.setContentsMargins(40, 40, 40, 40)
-        title = QLabel("Create Account")
+        card_layout.setSpacing(15)
+        title = QLabel("🧪 Create Account")
         title.setFont(QFont('Segoe UI', 18, QFont.Bold))
+        title.setStyleSheet("color: #2d5a27;")
         title.setAlignment(Qt.AlignCenter)
         card_layout.addWidget(title)
 
         self.username_input = QLineEdit()
         self.username_input.setPlaceholderText("Username")
-        self.username_input.setStyleSheet("padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px;")
+        self.username_input.setStyleSheet("padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px;")
         card_layout.addWidget(self.username_input)
         self.password_input = QLineEdit()
         self.password_input.setPlaceholderText("Password")
         self.password_input.setEchoMode(QLineEdit.Password)
-        self.password_input.setStyleSheet("padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px;")
+        self.password_input.setStyleSheet("padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px;")
         card_layout.addWidget(self.password_input)
 
         signup_button = QPushButton("Sign Up")
@@ -145,25 +149,48 @@ class RegisterWindow(QWidget):
         back_button.clicked.connect(self.back_to_login)
         card_layout.addWidget(back_button)
 
+        self.error_label = QLabel("")
+        self.error_label.setStyleSheet("color: #e53e3e; font-size: 12px;")
+        self.error_label.setAlignment(Qt.AlignCenter)
+        card_layout.addWidget(self.error_label)
+
         main_layout.addWidget(self.card)
         self.setLayout(main_layout)
 
     def handle_register(self):
-        user = self.username_input.text()
-        password = self.password_input.text()
-        if not user or not password: return
+        user = self.username_input.text().strip()
+        password = self.password_input.text().strip()
+        if not user or not password:
+            self.error_label.setText("Please provide both username and password.")
+            return
         
+        self.error_label.setText("Connecting...")
+        QApplication.processEvents()
         try:
             response = api.register_request(user, password)
-            if response.status_code == 201:
+            if response.status_code in (200, 201):
                 QMessageBox.information(self, "Success", "Account created!")
                 self.back_to_login()
+            else:
+                try:
+                    err = response.json()
+                except Exception:
+                    err = response.text
+                self.error_label.setText(f"Registration Failed: {response.status_code} - {err}")
         except Exception as e:
             tb = traceback.format_exc()
             print(f"REGISTER DEBUG ERROR: {e}\n{tb}")
-            QMessageBox.critical(self, "Registration Error", f"Could not register user:\n{e}")
+            self.error_label.setText(f"Internal error: {e}")
+            QMessageBox.critical(self, "Registration Error", f"Could not register user:\n{e}\n\nSee console for details.")
 
     def back_to_login(self):
+        # If a switch callback was provided, call it to let the caller manage window switching.
+        if self.switch_callback:
+            try:
+                self.switch_callback()
+            except Exception:
+                pass
+        # Fallback: open a fresh LoginWindow
         self.login_win = LoginWindow()
         self.login_win.show()
         self.close()

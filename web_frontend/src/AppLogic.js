@@ -19,8 +19,11 @@ export const useAppLogic = () => {
         try {
         const res = await get_history(authToken);
         set_history(res.data);
-        } catch (err) {
-        console.error("Failed to load history", err);
+        } catch (err){
+        // Log full error for debugging
+        console.error('Login error', err.response || err);
+        const serverMessage = err.response && (err.response.data?.detail || JSON.stringify(err.response.data));
+        set_error(serverMessage || "Authentication failed. Check your username/password.");
         }
     };
 
@@ -63,7 +66,7 @@ export const useAppLogic = () => {
             load_history(access_token); 
         }
         } catch (err){
-        set_error("Authentivation failed. Check your details.");
+        set_error("Authentication failed. Check your details.");
         }
     };
 

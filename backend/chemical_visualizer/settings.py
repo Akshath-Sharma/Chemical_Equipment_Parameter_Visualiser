@@ -135,6 +135,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',      # React frontend (127.0.0.1)
     'http://localhost:8000',      # Django backend
     'http://127.0.0.1:8000',      # Django backend (127.0.0.1)
+    'http://localhost:3001',      # Port in case 3000 is occupied.
 ]
 
 CORS_ALLOW_CREDENTIALS = True
