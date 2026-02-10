@@ -85,7 +85,7 @@ All three components share a single Django API backend, ensuring data consistenc
 ## Project Structure
 
 ```
-FOSSEE_Project/
+Chemical_Equipment_Parameter_Visualizer/
 ├── backend/                          # Django backend
 │   ├── manage.py
 │   ├── db.sqlite3
