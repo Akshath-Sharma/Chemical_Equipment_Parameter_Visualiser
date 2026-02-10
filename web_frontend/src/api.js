@@ -1,7 +1,6 @@
 import axios from "axios";
-
 // Base URL for the backend API
-const API_URL = "https://chemical-equipment-parameter-visualiser.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "https://chemical-equipment-parameter-visualiser.onrender.com";
 
 // AUTHENTICATION
 export const login_user = async (username, password) => {
@@ -9,7 +8,7 @@ export const login_user = async (username, password) => {
 };
 
 export const register_user = async (username, password) => {
-    return await axios.post(`${API_URL}/register/`, {username, password});
+    return await axios.post(`${API_URL}/api/register/`, {username, password});
 };
 
 // DATA FETCHING from HISTORY

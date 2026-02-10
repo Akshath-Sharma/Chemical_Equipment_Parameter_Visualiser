@@ -3,24 +3,25 @@ services:
     name: chemical-equipment-api
     env: python
     plan: free
+    rootDir: backend 
     buildCommand: |
       pip install --upgrade pip
-      pip install -r backend/requirements.txt
-      cd backend && python manage.py collectstatic --no-input
-      cd backend && python manage.py migrate --no-input
-    startCommand: cd backend && gunicorn chemical_visualizer.wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --workers 2
+      pip install -r requirements.txt
+      python manage.py collectstatic --no-input
+      python manage.py migrate --no-input
+    startCommand: gunicorn chemical_visualizer.wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --workers 2
     envVars:
       - key: DJANGO_SECRET_KEY
         sync: false
       - key: DEBUG_MODE
-        value: "True"
+        value: "False" 
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: DATABASE_URL
         fromDatabase:
           name: chemical-equipment-db
           property: connectionString
-    
+
 databases:
   - name: chemical-equipment-db
     databaseName: chemical_db
