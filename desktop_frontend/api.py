@@ -1,6 +1,6 @@
 import requests
 
-BASE_URL = "http://127.0.0.1:8000/api"
+BASE_URL = "http://127.0.0.1:8000"
 
 def login_request(username, password):
     return requests.post(f"{BASE_URL}/token/", json={'username': username, 'password': password})

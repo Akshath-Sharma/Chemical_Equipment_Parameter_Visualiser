@@ -20,12 +20,3 @@ matplotlib
 # Utilities
 certifi
 urllib3
-gunicorn
-
-# Web Deployment & Static Files
-gunicorn
-whitenoise
-
-# PostgreSQL (for Render)
-psycopg2-binary
-dj-database-url

@@ -12,13 +12,14 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import dj_database_url
 
 load_dotenv() # [EDITTED] Loads environment variables from .env file
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+SECRET_KEY = 'django-insecure-local-key-whatever-you-want'
+DEBUG = True
+ALLOWED_HOSTS = ['*']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -50,7 +51,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,23 +82,15 @@ WSGI_APPLICATION = 'chemical_visualizer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# [EDITTED] PostgreSQL for render deployment, locally SQlite3
-if os.getenv('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.getenv('DATABASE_URL'),
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
-else:
-    DATABASES = {
-        'default': {
+# Database - SQLite3 for local development
+DATABASES = {
+    'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
+STATIC_URL = 'static/'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -134,16 +126,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-#[EDITTED] for deployment
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Midea Files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'mediafiles'
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*.localhost']
 
-ALLOWED_HOSTS = ['chemical-equipment-parameter-visualiser.onrender.com', 'localhost', '127.0.0.1']
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS Configuration 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',      # React frontend (localhost)
+    'http://127.0.0.1:3000',      # React frontend (127.0.0.1)
+    'http://localhost:8000',      # Django backend
+    'http://127.0.0.1:8000',      # Django backend (127.0.0.1)
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

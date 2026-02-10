@@ -1,6 +1,6 @@
 import axios from "axios";
 // Base URL for the backend API
-const API_URL = process.env.REACT_APP_API_URL || "https://chemical-equipment-parameter-visualiser.onrender.com";
+const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
 // AUTHENTICATION
 export const login_user = async (username, password) => {
