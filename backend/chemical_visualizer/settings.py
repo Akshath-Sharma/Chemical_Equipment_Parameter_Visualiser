@@ -143,6 +143,9 @@ MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000","https://chemical-equipment-parameter-visual-phi.vercel.app","https://chemical-equipment-paramete-git-9dfc3a-akshath-sharmas-projects.vercel.app"]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
