@@ -146,6 +146,7 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:3000","https://chemical-equipment-para
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
